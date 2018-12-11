@@ -1,0 +1,279 @@
+//Single Linked Lists (in C)
+
+#include <stdio.h>
+#include <stdlib.h>
+
+//1. Creation of a user-defined node data structure
+struct node
+{
+    int data ;                        //Creation of data field (ie. int input)
+    struct node *link ;              //Creation of link field (ie. pointer to next node)
+};
+
+//2. Creation of a root pointer that points to the START of SLL (with dynamic memory)
+struct node *root = NULL ;
+
+
+//                  Creating SLL always comes with NODE STRUCTURE and ROOT POINTER
+
+
+
+//3. Development of append() function
+void append()
+{
+    struct node *temp ;                                  //Creation of a pointer variable (temp)
+    temp = (struct node*) malloc(sizeof(struct node)) ; //Similar to root pointer creation
+    
+    printf("%s", "Enter the value to be appended : ") ;    //Gathering user input on DATA to store
+    scanf("%d", &temp->data) ;              //Sending this data to the DATA FIELD of the node
+    temp->link = NULL ;                    //Data field set, now set the LINK FIELD of the node
+    
+    if (root == NULL)                    //Check if the user-input node is the FIRST node in SLL
+    {
+        root = temp ;                   //Root node now points to user-defined node
+        printf("The value %d has been appended \n\n", temp->data);
+    }
+    
+    else
+    {
+        struct node *ptr ;                          //Setting a pointer ptr to take on root node value
+        ptr = root ;
+        
+        while (ptr->link != NULL)        //Check if your nth node is the last node (yes if link == NULL)
+        {
+            ptr = ptr->link ;            //Point towards the NEXT node in the SLL
+        }
+                                   
+        ptr->link = temp ;         //Point the link of the LAST node towards the user-defined node                      
+        
+    }
+}
+
+
+// 4. Development of length() function
+
+int length()
+{
+    int count = 0;               //Initialise initial length of list = 0
+    struct node *proxy_root;      //Root pointer cannot touch - make a proxy root pointer
+    proxy_root = root;
+    
+    while (proxy_root != NULL)
+    {
+        count++;              //Raise count by 1 every time we encounter a node with non-null link field
+        proxy_root = proxy_root->link; //Make our proxy pointer point to the NEXT NODE
+    }
+    return count;   
+}
+
+
+// 5. Development of prepend() function
+
+void prepend()
+{
+    struct node *user_node;
+    user_node = (struct node*)malloc(sizeof(struct node)); //Creating a user-defined node
+    printf("%s", "Enter the value to be prepended : ") ;
+    scanf("%d", &user_node->data);     //Setting the data field of user node
+    user_node->link = NULL;           //Setting the link field of user node
+    
+    if (root == NULL)      //Start checking for nodes within the SLL
+    {
+        root = user_node;  //Root pointer now points towards user-defined node. FINISH
+    }
+    
+    else
+    {
+        user_node->link = root; //Set connection between user node and 1st node in SLL
+        root = user_node;      //Set connection between root pointer and user node
+    }
+    printf("The element %d has been prepended \n\n", user_node->data);
+}
+
+
+//6. Development of display() function
+
+void display()
+{
+    int j = 1;
+    struct node *proxy_root;
+    proxy_root = root;
+    
+    while (proxy_root != NULL)
+    {
+        printf("#%d node in the single linked list is : %d\n", j, proxy_root->data);
+        j++;
+        proxy_root = proxy_root->link;
+    }
+    
+    printf("You've reached the end of the list. %d elements were displayed\n\n", length());
+    
+}
+
+
+
+//7. Development of insert() function
+
+void insert()
+{
+    struct node *proxy_root;
+    proxy_root = root;                             //Development of root proxy pointer
+    
+    struct node *user_node;
+    user_node = (struct node*)malloc(sizeof(struct node));
+    printf("Enter the value to be inserted : ");    //Development of user node that is being inserted
+    scanf("%d", &user_node->data);
+    user_node->link = NULL;
+    
+    struct node *vehicle;
+    vehicle = root;
+    int i;
+    
+    while (1)
+    {
+        int position;
+        printf("%s","Enter the position to insert the value : ");
+        scanf("%d", &position);
+        
+        if (position == 1)
+        {
+            printf("%s","The value will be prepended to the SLL (ie. 1st position)\n");
+            prepend();
+            break;
+        }
+    
+        else if (1 < position <= length()) 
+    
+        {
+            int i;
+            struct node *vehicle;
+            vehicle = root;
+            for (i = 0; i < position - 2; i++)
+            {
+                vehicle = vehicle->link;
+            }
+            user_node->link = vehicle->link;             //Setting the RHS Link
+        
+            vehicle->link = user_node;            //Setting the LHS Link
+            
+            printf("The value %d has been added at position #%d \n\n", user_node->data, position);
+            break;
+            
+        }
+    
+        else 
+        {
+            printf("Please enter a valid position between 1 and %d \n", length());
+        }
+
+    }
+    
+    
+}
+
+
+
+//8. Development of delete() function
+
+void delete()
+{
+    while(1)
+    {
+        int deleted_pos;
+        struct node *proxy_root;
+        proxy_root = root;
+        printf("Enter the position of the element to be deleted : ");
+        scanf("%d", &deleted_pos);
+    
+        if (deleted_pos == 1)                       //For deletion of 1st node
+        {
+            root = proxy_root->link;
+            proxy_root->link = NULL;
+            printf("The element %d at position #%d has been deleted\n\n", proxy_root->data, deleted_pos);
+            break;
+        }
+    
+        else if (1 < deleted_pos <= length())      //For deletion of subsequent nodes (including ending)
+        {
+            int i;
+            for (i = 0; i < deleted_pos - 2; i++)    
+            {
+                proxy_root = proxy_root->link;
+            }
+        
+            struct node *proxy_root_2;
+            proxy_root_2 = proxy_root->link;
+            proxy_root->link = proxy_root_2->link;  //Setting (x-1)th node to point to (x+1)th node
+                                                   //Destroys the connection between (x-1) and x nodes too
+            proxy_root_2->link = NULL;            //Destroy connection between x and (x+1) nodes  
+            
+            printf("The element %d at position #%d has been deleted\n\n", proxy_root_2->data, deleted_pos);
+            break;
+        }
+    
+        else
+        {
+            printf("Please enter a valid position. There're only %d elements in the list currently\n", length());
+        }
+    }
+}
+
+void main()
+{
+    int choice;
+    while (1)
+    {
+        printf("These are the linked list operations : Choose one \n");
+        printf("1. Append an element to the list \n");
+        printf("2. Count the number of elements within the list \n");
+        printf("3. Prepend an element to the list \n");
+        printf("4. Display the elements within the list \n");
+        printf("5. Insert a value at a specified position \n");
+        printf("6. Delete an element at a specified position \n");
+        printf("Your choice : ");
+        scanf("%d", &choice);
+        
+    
+        switch(choice)
+        {
+            case 1 :
+            append() ;
+            break;
+            
+            case 2:
+            printf("There're %d elements within the list \n\n", length());
+            break;
+            
+            case 3:
+            prepend();
+            break;
+            
+            case 4:
+            display();
+            break;
+            
+            case 5:
+            insert();
+            break;
+            
+            case 6:
+            delete();
+            break;
+    
+            default :
+            printf("%s", "Please enter a valid option \n\n");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
