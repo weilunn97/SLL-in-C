@@ -1,0 +1,106 @@
+#include <stdio.h>
+//Creating our queue (initialising as global variables)
+
+#define CAPACITY 5
+char queue[CAPACITY];
+int front = 0; 
+int back = 0;
+int choice;
+
+
+//1. Development of insert() function
+
+void insert()
+{
+    if (back == CAPACITY)
+    {
+    printf("Queue is full, try deleting an element first\n\n");
+    return 0;
+    }
+    
+    else
+    {
+        int inserted_value;
+        printf("Enter the value to insert : ");
+        scanf("%d", &inserted_value);
+        queue[back] = inserted_value;
+        back++;
+        printf("The element %d has been inserted at the #%d position\n\n", inserted_value, back);
+        return 1;
+    }
+}
+
+
+//2. Development of delete() function
+
+void delete()
+{
+    if (front == back)
+    {
+    printf("Queue is empty, try inserting an element first\n\n");
+    return 0;
+    }
+    
+    else
+    {
+        printf("The element %d has been deleted\n\n", queue[0]);
+        int i;
+        for (i=0; i<back; i++)
+        {
+            queue[i] = queue[i+1];
+        }
+        back--;
+    }
+}
+
+
+
+//3. Development of traverse() function
+void traverse()
+{
+    if (front == back)
+    {
+        printf("There're no elements in the list\n\n");
+        return 0;
+    }
+    
+    else
+    {
+        int i; 
+        printf("The elements are : \n");
+        for (i=0; i<back; i++)
+        {
+            printf("%d\t", queue[i]);
+        }
+        printf("\n\n");
+    }
+}
+
+
+void main()
+{
+    
+    
+    while(1)
+    {
+        printf("1. Insert elements to queue \n");
+        printf("2. Delete elements from queue \n");
+        printf("3. Print elements in queue \n\n");
+        printf("Choose a function : ");
+        scanf("%d", &choice);
+        
+        switch(choice)
+        {
+            case 1 : insert();
+                     break;
+            
+            case 2 : delete();
+                     break;
+            
+            case 3 : traverse();
+                     break;
+        }
+    }
+    
+    
+}
