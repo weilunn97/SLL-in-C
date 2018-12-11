@@ -1,0 +1,132 @@
+//Stacks in C (with Push/Pop/Traverse funcions)
+
+#include <stdio.h>
+int choice, inserted_elem, top = -1;
+void push(int), pop();
+//Creating our static memory empty stack with 5 memory spaces
+#define CAPACITY 5
+int stack1[CAPACITY];
+
+
+int isEmpty()
+{
+    if (top == -1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+int isFull()
+{
+    if (top == 4)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+    
+}
+
+
+void push(int element)
+{
+    if (isFull())
+    {
+        printf("%s", "Stack is full. Unable to push elements in \n\n") ;
+    }
+    else
+    {
+        top++ ;
+        stack1[top] = element ;
+        printf("The element %d has been pushed into the stack \n\n", element) ;
+    }
+}
+
+
+void pop()
+{
+    if (isEmpty())
+    {
+        printf("%s", "Stack is empty. Unable to pop elements out \n\n") ;
+    }
+    else
+    {
+        int removed_elem = stack1[top] ;
+        top-- ;
+        printf("The element %d has been removed \n\n", removed_elem) ; 
+    }
+}
+
+
+void traverse()
+{
+    if (isEmpty())
+    {
+        printf("%s", "Stack is empty. Unable to traverse \n") ;
+    }
+    else
+    {
+        int i ;
+        printf("The elements are : \n") ;
+        for (i=0; i<=top; i++) 
+        {
+            printf("%d\t", stack1[i]) ;
+        }
+    }
+    printf("\n\n");
+}
+
+void main()
+{
+    while(1)
+    {
+        //Initialising the Menu
+        printf("%s","Choose an option below (Enter only 1-5) : \n");
+        printf("%s", "1. Push an element \n");
+        printf("%s", "2. Pop an element \n");
+        printf("%s", "3. Traverse the stack \n");
+        printf("%s", "4. Quit the program \n");
+        printf("%s", "Your choice : ");
+        scanf("%d", &choice);
+    
+        //Setting up if-elif statements via switch
+    switch(choice)
+    {
+        case 1 : 
+        printf("%s", "Enter the element you wish to insert : ");
+        scanf("%d", &inserted_elem);
+        push(inserted_elem);
+        break;
+    
+        case 2 :
+        pop();
+        break;
+        
+        case 3 :
+        traverse();
+        break;
+        
+        default :
+        printf("%s", "Please enter a valid number from 1-4 only : \n\n");
+        break;
+    }
+    }
+}    
+
+
+
+
+
+
+
+
+
+
+
